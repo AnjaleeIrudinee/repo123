@@ -7,11 +7,11 @@ terraform {
     }
   }
 
-  # Update this block with the location of your terraform state file
+ # Update this block with the location of your terraform state file
   backend "azurerm" {
-    resource_group_name  = "devops"
-    storage_account_name = "terraformgithubactions"
-    container_name       = "tfstate"
+    resource_group_name  = "anjigithubdeploy"
+    storage_account_name = "teststoreanji01"
+    container_name       = "newcontainer1"
     key                  = "demo.terraform.tfstate"
    
   }
