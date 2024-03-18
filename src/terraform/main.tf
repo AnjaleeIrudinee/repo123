@@ -8,7 +8,7 @@ terraform {
   }
 
   # Update this block with the location of your terraform state file
-  backend "azurerm" {
+  backend "AzureCloud" {
     resource_group_name  = "devops"
     storage_account_name = "terraformgithubactions"
     container_name       = "tfstate"
