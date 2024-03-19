@@ -8,11 +8,13 @@ terraform {
   }
 
  # Update this block with the location of your terraform state file
-  backend "azurerm" {
-    resource_group_name  = "anjigithubdeploy"
-    storage_account_name = "teststoreanji01"
-    container_name       = "newcontainer1"
-    key                  = "demo.terraform.tfstate"
+    resource_group_name  = "StorageAccount-ResourceGroup"
+    storage_account_name = "abcd1234"
+    container_name       = "tfstate"
+    key                  = "prod.terraform.tfstate"
+    use_msi              = true
+    subscription_id      = "eee0e1cf-7743-4ef2-ab64-bdc7d3edd82c"
+    tenant_id            = "f07659d6-bf7d-47a1-a231-8aa05f02c64e"
    
   }
 }
