@@ -6,7 +6,7 @@ terraform {
       version = ">= 2.46.0"
     }
   }
-
+ backend "azurerm" {
  # Update this block with the location of your terraform state file
     resource_group_name  = "StorageAccount-ResourceGroup"
     storage_account_name = "abcd1234"
