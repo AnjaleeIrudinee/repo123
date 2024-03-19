@@ -12,9 +12,7 @@ terraform {
     storage_account_name = "anjigithubdeploy"
     container_name       = "newcontainer1"
     key                  = "prod.terraform.newcontainer1"
-    use_msi              = true
-    subscription_id      = "eee0e1cf-7743-4ef2-ab64-bdc7d3edd82c"
-    tenant_id            = "f07659d6-bf7d-47a1-a231-8aa05f02c64e"
+  
    
   }
 }
