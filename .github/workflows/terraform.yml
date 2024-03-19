@@ -12,41 +12,48 @@ env:
   ROOT_PATH: '${{ github.workspace }}/src/terraform'
 jobs:
   terraform_plan:
-    name: 'Terraform Plan'
-    runs-on: ubuntu-latest
- 
-    defaults:
-      run:
-        shell: bash
+    runs-on: self-hosted
     steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          auth-type: IDENTITY          
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
 
-    - uses: azure/login@v2
-      with:
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+      # Azure CLI Action only supports linux self-hosted runners for now. 
+      # If you want to execute the Azure CLI script on a windows self-hosted runner, you can execute it directly in `run`.  
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
 
-    
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az account show
+      - name: Azure PowerShell script
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: "latest"
+          inlineScript: |
+            Get-AzContext
+            Get-AzResourceGroup
           
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.0.0
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
    
           
-    - name: Terraform Init
-      run: terraform init
-      working-directory: ${{env.ROOT_PATH}}
-    - name: Terraform Plan
-      run: terraform plan 
-      working-directory: ${{env.ROOT_PATH}}
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{env.ROOT_PATH}}
+      - name: Terraform Plan
+        run: terraform plan 
+        working-directory: ${{env.ROOT_PATH}}
  
   terraform_apply:
     name: 'Terraform Apply'
